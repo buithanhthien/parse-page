@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var prog  = require('caporal');
+const prog  = require('caporal');
 
 
 function listNums(phrase_num){ 
@@ -14,9 +14,9 @@ function listNums(phrase_num){
     if(nums[1] == '')
 	return [nums[0]];
 
-    let arr = [];
-    let a = b = 0;
-    if ( nums[0] > nums[1]) {
+    var arr = [];
+    let a,b;
+    if ( parseInt(nums[0]) > parseInt(nums[1])) {
 	a = nums[1];
 	b = nums[0];
     }
@@ -53,16 +53,22 @@ function parse(str){
     var split_str = _str.split(',');
     var split_str_size = split_str.length;
 
-    var arr = []
+    let check = false;
+
+    var arr = [];
     for(i = 0; i < split_str_size; ++i){
 	for(j = 0; j < split_str[i].length; j++){
-	    if(split_str[i][j] == '-'){
+	    if(split_str[i][j] == '-') check = true;
+	}
+
+	    if (check == true){
 		arr = arr.concat(listNums(split_str[i])); 
+		check = false;
 	    }
 	    else{
 		arr = arr.concat(split_str[i]);  
 	    }
-	}
+	
   }
     
     return arr;
@@ -86,3 +92,4 @@ prog
     });
 
 prog.parse(process.argv);
+
