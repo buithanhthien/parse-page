@@ -5,31 +5,33 @@ const prog  = require('caporal');
 
 function listNums(phrase_num){ 
     var nums = phrase_num.split('-');
-    console.log(nums);
 
+    if(nums.length == 1)
+	return [parseInt(nums[0])];
     if(nums[0] == '' && nums[1] == '')
 	return [0];
     if(nums[0] == '')
-	return [nums[1]];
+	return [parseInt(nums[1])];
     if(nums[1] == '')
-	return [nums[0]];
+	return [parseInt(nums[0])];
 
-    var arr = [];
+    let arr = [];
     let a,b;
     if ( parseInt(nums[0]) > parseInt(nums[1])) {
-	a = nums[1];
-	b = nums[0];
+	a = parseInt(nums[1]);
+	b = parseInt(nums[0]);
     }
     else{
-	a = nums[0];
-	b = nums[1];
+	a = parseInt(nums[0]);
+	b = parseInt(nums[1]);
     }
-    for(i = parseInt(a); i <= parseInt(b); i++){
+    
+    for(i = a; i <= b; i++)
 	arr.push(i);
 
-    return arr;
-}
+     return arr;
 
+}
 
 
 function trimValidStr(str){
@@ -53,25 +55,15 @@ function parse(str){
     var split_str = _str.split(',');
     var split_str_size = split_str.length;
 
-    let check = false;
-
     var arr = [];
-    for(i = 0; i < split_str_size; ++i){
-	for(j = 0; j < split_str[i].length; j++){
-	    if(split_str[i][j] == '-') check = true;
-	}
+    for(ji = 0; ji < split_str_size; ji++){
+	tmpArr = listNums(split_str[ji]);
+	arr = arr.concat(tmpArr); 
+    }
 
-	    if (check == true){
-		arr = arr.concat(listNums(split_str[i])); 
-		check = false;
-	    }
-	    else{
-		arr = arr.concat(split_str[i]);  
-	    }
-	
-  }
+    var d_arr= [...new Set(arr)];
     
-    return arr;
+    return d_arr.sort((a, b) => a - b);
 }
 
 
@@ -87,9 +79,9 @@ prog
     .command('test')
     .argument('str','str')
     .action((args) => {
-	var split_str = args.str.split(','); 
-	console.log(split_str);
+	console.log(listNums(args.str));
     });
+    
 
 prog.parse(process.argv);
 
