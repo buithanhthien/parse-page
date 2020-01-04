@@ -71,7 +71,6 @@ prog
     .argument('str','str')
     .action((args, options, logger) => {
 	console.log(parse(args.str));
-    console.log('ok');
     });
 
 
